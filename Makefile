@@ -5,6 +5,7 @@ build_PolyChord:
 	cd polychordlite && $(MAKE) pypolychord && python setup.py -q install --user
 
 polychord_MR:
+	mkdir -p bin
 	cd polychordlite && $(MAKE) polychord_MR
 	cp polychordlite/bin/polychord_MR bin/polychord_MR
 
