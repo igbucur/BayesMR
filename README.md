@@ -11,4 +11,4 @@ The BayesMR approach uses the PolyChord software (Copyright © 2015 Will Handley
 
 2. Enter the folder where the repository was cloned (called BayesMR by default) and execute the Makefile using: `make`. Assuming everything managed to compile successfully, the PolyChord implementation of the BayesMR approach should appear as the executable file _BayesMR/bin/polychord_MR_.
 
-3. Run the examples provided with the package to test that the installation is working.
+3. Execute the script `./run_SMMR_experiments.sh` provided with the package to verify that the installation is working.
