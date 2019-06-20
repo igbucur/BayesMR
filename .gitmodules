@@ -1,3 +1,3 @@
 [submodule "PolyChordLite"]
 	path = polychordlite
-	url = git@gitlab.science.ru.nl:gbucur/polychordlite.git
+	url = https://github.com/igbucur/BayesMR.git
