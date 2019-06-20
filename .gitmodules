@@ -1,0 +1,3 @@
+[submodule "polychordlite"]
+	path = polychordlite
+	url = https://github.com/igbucur/PolyChordLite
