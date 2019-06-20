@@ -9,6 +9,6 @@ The BayesMR approach uses the PolyChord software (Copyright © 2015 Will Handley
 1. Clone this repository using the --recurse-submodules option, e.g.:
 `git clone --recurse-submodules https://github.com/igbucur/BayesMR.git`.
 
-2. Enter the folder where the repository was cloned (called BayesMR by default) and execute the Makefile using: `make`. Assuming everything managed to compile successfully, the PolyChord implementation of the BayesMR approach should appear as the executable file _BayesMR/bin/polychord_MR_.
+2. Enter the folder where the repository was cloned (called BayesMR by default) and execute the Makefile using: `make polychord_MR`. Assuming everything managed to compile successfully, the PolyChord implementation of the BayesMR approach should appear as the executable file _BayesMR/bin/polychord_MR_.
 
 3. Execute the script `./run_SMMR_experiments.sh` provided with the package to verify that the installation is working.
