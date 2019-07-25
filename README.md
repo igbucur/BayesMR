@@ -2,8 +2,13 @@
 
 Code implementation for the approach described in the article "Inferring the Direction of a Causal Link and Estimating Its Effect via a Bayesian Mendelian Randomization Approach" by Ioan Gabriel Bucur, Tom Claassen, and Tom Heskes (https://doi.org/10.1177/0962280219851817).
 
+## Prerequisites
+- This software uses the *Armadillo* C++ library for linear algebra and scientific computing. To install Armadillo on your machine, please follow the instructions at http://arma.sourceforge.net/ .
+- This software uses the *Boost* Math Toolkit for the statistical distributions and functions. To install Boost on your machine, please follow the instructions at https://www.boost.org/ .
+
 ## PolyChord
-The BayesMR approach uses the PolyChord software (Copyright © 2015 Will Handley, Mike Hobson & Anthony Lasenby) forked from the GitHub repository https://github.com/PolyChord/PolyChordLite. The license agreement can be found at https://github.com/PolyChord/PolyChordLite/blob/master/LICENCE or within the PolyChordLite submodule included in this repository.
+The BayesMR approach uses the *PolyChord* software (Copyright © 2015 Will Handley, Mike Hobson & Anthony Lasenby) forked from the GitHub repository https://github.com/PolyChord/PolyChordLite. The license agreement can be found at https://github.com/PolyChord/PolyChordLite/blob/master/LICENCE or within the PolyChordLite submodule included in this repository.
+
 
 ## Installation instructions
 1. Clone this repository using the --recurse-submodules option, e.g.:
