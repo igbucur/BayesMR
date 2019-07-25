@@ -1,6 +1,6 @@
-[submodule "PolyChordLite"]
+[submodule "polychordlite"]
 	path = polychordlite
-	url = git@gitlab.science.ru.nl:gbucur/polychordlite.git
+	url = https://github.com/igbucur/PolyChordLite
 [submodule "inst/simpleini"]
 	path = inst/simpleini
 	url = https://github.com/brofield/simpleini
