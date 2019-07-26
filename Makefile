@@ -6,7 +6,8 @@ build_PolyChord:
 
 polychord_MR:
 	mkdir -p bin
-	mkdir -p chains
+	mkdir -p chains/clusters
+	mkdir -p ini
 	cd inst/PolyChordLite && $(MAKE) polychord_MR
 	cp inst/PolyChordLite/bin/polychord_MR bin/polychord_MR
 
