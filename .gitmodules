@@ -1,5 +1,5 @@
 [submodule "polychordlite"]
-	path = polychordlite
+	path = inst/PolyChordLite
 	url = https://github.com/igbucur/PolyChordLite
 [submodule "inst/simpleini"]
 	path = inst/simpleini
