@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 # Script for running experiments in SMMR paper
 
+# 4.3 Example: Instrumental variable setting
+Rscript exec/smmr_4_3.R
+
+# 4.4 Example: Near-condtional independence (near-LCD)
+Rscript exec/smmr_4_4.R
+
 # 6.1 Birth weight versus fasting glucose
-bin/polychord_MR ini/BW_FG_dir.ini ini/BW_FG_model_dir.ini
-bin/polychord_MR ini/BW_FG_rev.ini ini/BW_FG_model_rev.ini
 
 # 6.2 risk of Parkinson's disease
 
