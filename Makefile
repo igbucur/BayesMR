@@ -8,7 +8,7 @@ polychord_MR:
 	mkdir -p bin
 	mkdir -p chains/clusters
 	mkdir -p ini
-	cd inst/PolyChordLite && $(MAKE) polychord_MR
+	cd inst/PolyChordLite && $(MAKE) polychord_MR MPI=
 	cp inst/PolyChordLite/bin/polychord_MR bin/polychord_MR
 
 # This only cleans the MR application, but it does it properly, unlike PolyChord
