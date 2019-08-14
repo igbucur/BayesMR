@@ -1,5 +1,5 @@
 ## Section 6 - Real-world applications
-## 6.1 - Effect of birth weight on adult fasting glucose
+## 6.2 - Effect of birth weight on adult fasting glucose
 
 source('R/write_configuration_file.R')
 source('R/PolyChord_interface.R')
@@ -9,7 +9,8 @@ library(ggplot2)
 library(ggthemes)
 
 
-# First hyperparameter setting (lambda = 1e-2) ----------------------------
+
+# Posterior obtained with spike-and-slab prior (Figure 17) ----------------------------
 
 write_configuration_file(
   config_file_name = 'ini/smmr_6_2_fig_17.ini',
@@ -36,7 +37,7 @@ plot(BW_FG_beta_plot)
 ggsave('Manuscript-figure17.pdf', BW_FG_beta_plot, width = 10, height = 5)
 
 
-# Second hyperparameter setting (lambda = 1e-4) ---------------------------
+# Posterior obtained under IV assumptions (Figure 18) ---------------------------------
 
 write_configuration_file(
   config_file_name = 'ini/smmr_6_2_fig_18.ini',
