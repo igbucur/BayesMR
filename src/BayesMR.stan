@@ -78,13 +78,13 @@ model {
   
   /* Spike-and-slab Prior on Structural Parameters */
   for (j in 1:J) {
-    target += log_sum_exp(log(wgamma) + normal_lpdf(sgamma[j] | 0, sd_spike), log1m(wgamma) + normal_lpdf(sgamma[j] | 0, sd_slab));
-    target += log_sum_exp(log(walpha) + normal_lpdf(salpha[j] | 0, sd_spike), log1m(walpha) + normal_lpdf(salpha[j] | 0, sd_slab));
+    target += log_sum_exp(log(wgamma) + normal_lpdf(sgamma[j] | 0, sd_slab), log1m(wgamma) + normal_lpdf(sgamma[j] | 0, sd_spike));
+    target += log_sum_exp(log(walpha) + normal_lpdf(salpha[j] | 0, sd_slab), log1m(walpha) + normal_lpdf(salpha[j] | 0, sd_spike));
   }
-  target += log_sum_exp(log(0.5) +  normal_lpdf(sbeta | 0, sd_spike), log(0.5) +  normal_lpdf(sbeta | 0, sd_slab));
+  target += log_sum_exp(log(0.5) +  normal_lpdf(sbeta | 0, sd_slab), log(0.5) +  normal_lpdf(sbeta | 0, sd_spike));
   
-  target += log_sum_exp(log(0.5) +  normal_lpdf(skappa_X | 0, sd_spike), log(0.5) +  normal_lpdf(skappa_X | 0, sd_slab));
-  target += log_sum_exp(log(0.5) +  normal_lpdf(skappa_Y | 0, sd_spike), log(0.5) +  normal_lpdf(skappa_Y | 0, sd_slab));
+  target += log_sum_exp(log(0.5) +  normal_lpdf(skappa_X | 0, sd_slab), log(0.5) +  normal_lpdf(skappa_X | 0, sd_spike));
+  target += log_sum_exp(log(0.5) +  normal_lpdf(skappa_Y | 0, sd_slab), log(0.5) +  normal_lpdf(skappa_Y | 0, sd_spike));
     
   /* Uninformative Gaussian prior on Scale Parameters */
   sigma_X ~ normal(0, 10);
