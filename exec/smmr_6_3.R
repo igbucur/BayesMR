@@ -59,18 +59,19 @@ system('bin/polychord_MR ini/smmr_6_3.ini')
 
 # As a faster alternative, one can sample from the posterior using Stan,
 # since for this example we are not interested in computing the marginal likelihood.
-# library(rstan)
-# Pks_BMI_fit <- stan("src/BayesMR.stan", data = list(
-#   N = N,
-#   J = J,
-#   n = n,
-#   v_spike = 0.0001,
-#   v_slab = 1,
-#   SS = SSS,
-#   mu_X = 0,
-#   mu_Y = 0,
-#   eaf = EAF
-# ), iter = 50000, chains = 3, control = list(adapt_delta = 0.99, max_treedepth = 20))
+library(rstan)
+Pks_BMI_rstan <- stan_model("src/BayesMR.stan")
+Pks_BMI_fit <- sampling(Pks_BMI_rstan, data = list(
+  N = N,
+  J = J,
+  n = n,
+  v_spike = 0.0001,
+  v_slab = 1,
+  SS = SSS,
+  mu_X = 0,
+  mu_Y = 0,
+  eaf = EAF
+), iter = 500, control = list(adapt_delta = 0.99, max_treedepth = 20))
 # beta <- as(Pks_BMI_fit, "matrix")[, 'beta', drop = FALSE]
 
 
@@ -102,3 +103,33 @@ Pks_BMI_outliers_plot <- ggplot(data.frame(Y = Gamma_hat, X = gamma_hat), aes(x 
   ylab("Genetic associations with the outcome")
 
 ggsave('Manuscript-figure20.pdf', Pks_BMI_outliers_plot, fonts = "serif", width = 10, height = 7)
+
+
+
+# Estimate of pleiotropic effect on risk of PD ----------------------------
+
+outliers <- order(Gamma_hat)[c(2, 1)] # The outliers are the ones with the smallest association with the outcome
+post_samples <- read_PolyChord_samples('chains/smmr_6_3_equal_weights.txt')
+
+wgamma <- post_samples$wgamma
+walpha <- post_samples$walpha
+
+sigma_Y <- qnorm(post_samples$sigma_Y / 2 + 0.5, sd = 10)
+sigma_X <- qnorm(post_samples$sigma_X / 2 + 0.5, sd = 10)
+
+for (idx in outliers) {
+  salpha <- sapply(1:nrow(post_samples), function(i) {
+    quantile_spike_and_slab_2(post_samples[, paste0('salpha[', idx, ']')][i], post_samples$walpha[i], slab = 1, spike = 10000)
+  })
+  
+  post_samples[, paste0('alpha[', idx, ']')] <- salpha * sigma_Y / SiG[idx]
+}
+
+alpha <- post_samples[, paste0('alpha[', outliers, ']')]
+
+plot_Pks_BMI_alpha <- mcmc_areas(alpha) +
+  theme_tufte() + theme(text = element_text(size = 30), axis.title.x = element_text(margin = margin(t = 30))) +
+  scale_y_discrete(labels = c("rs17001654", "rs13107325")) +
+  xlab(expression(paste("Pleiotropic effect on risk of PD (", alpha, ")")))
+
+ggsave('Manuscript-figure21.pdf', plot_Pks_BMI_alpha, fonts = "serif", width = 10, height = 7)
