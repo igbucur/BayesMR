@@ -1,5 +1,27 @@
 source('R/prior_functions.R')
 
+#' Read data.frame from a PolyChord output file and name the columns appropriately.
+#'
+#' @param filename Should be of the form [root].txt or [root]_equal_weights.txt (see PolyChord documentation)
+#' @param J 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+read_PolyChord_samples <- function(filename) {
+  
+  data_frame <- read.table(filename)
+  J <- (ncol(data_frame) - 9) / 2 # number of instruments
+  names(data_frame) <- c(
+    'w', 'lp__', 'wgamma', 'walpha',
+    paste0(c(outer(c('sgamma[', 'salpha['), 1:J, paste0)), ']'),
+    'sbeta', 'skappa_X', 'skappa_Y', 'sigma_X', 'sigma_Y'
+  )
+  
+  data_frame
+}
+
 read_polychord_logevidence <- function(filename) {
   line <- readLines(filename, 9)[9]
   lev <-  as.numeric(substr(line, 17, 39))
