@@ -4,6 +4,7 @@
 
 source('R/write_configuration_file.R')
 source('R/PolyChord_interface.R')
+source('R/derive_sufficient_statistics.R')
 
 library(bayesplot)
 library(ggplot2)
