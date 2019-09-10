@@ -1,6 +1,6 @@
 # BayesMR
 
-Code implementation for the approach described in the article "Inferring the Direction of a Causal Link and Estimating Its Effect via a Bayesian Mendelian Randomization Approach" by Ioan Gabriel Bucur, Tom Claassen, and Tom Heskes (https://doi.org/10.1177/0962280219851817).
+Code implementation for the approach described in the article "Inferring the Direction of a Causal Link and Estimating Its Effect via a Bayesian Mendelian Randomization Approach" by Ioan Gabriel Bucur, Tom Claassen, and Tom Heskes, which has been published in Statistical Methods in Medical Research (https://doi.org/10.1177/0962280219851817).
 
 ## Prerequisites
 - This software uses the *Armadillo* C++ library for linear algebra and scientific computing. To install Armadillo on your machine, please follow the instructions at http://arma.sourceforge.net/ .
