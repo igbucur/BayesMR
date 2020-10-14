@@ -6,6 +6,8 @@ library(bayesplot)
 library(knitr)
 library(kableExtra)
 
+source('R/PolyChord_interface.R') # for quick_derive_beta
+
 figures_dir <- "figures/"
 if (!dir.exists(figures_dir)) dir.create(figures_dir)
 
