@@ -215,6 +215,9 @@ Parkinson_BMI_alpha_plot <- mcmc_areas(Parkinson_BMI_posterior, pars = c("alpha[
   theme(text = element_text(size = 30), axis.title.x = element_text(margin = margin(t = 30))) +
   ggthemes::theme_tufte() + 
   scale_y_discrete(labels = c("rs17001654", "rs13107325")) +
+  theme(text = element_text(size = 25), 
+        axis.title.x = element_text(margin = margin(t = 10)), 
+        axis.title.y = element_text(margin = margin(r = 10))) +
   xlab(expression(paste("Pleiotropic effect on risk of PD (", alpha, ")")))
 
 ggsave(paste0(figures_dir, "Figure_21.pdf"), Parkinson_BMI_alpha_plot, width = 10, height = 8)
