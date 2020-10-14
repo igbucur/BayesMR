@@ -155,8 +155,8 @@ knitr::kable(
 
 load('data/birth_weight_fasting_glucose.RData')
 
-plot_birth_weight_fasting_glucose_beta <- function(stan_samples) {
-  mcmc_areas(as.matrix(stan_samples), pars = "beta") +
+plot_birth_weight_fasting_glucose_beta <- function(samples) {
+  mcmc_areas(samples, pars = "beta") +
   theme_tufte() + coord_cartesian(xlim = c(-0.4, 0.2)) + 
   theme(text = element_text(size = 30), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
   geom_vline(xintercept = -0.155) + geom_vline(xintercept = c(-0.223, -0.088), linetype = "dashed") + 
@@ -222,20 +222,22 @@ ggsave(paste0(figures_dir, "Figure_21.pdf"), Parkinson_BMI_alpha_plot, width = 1
 
 # 6.4 Does coffee consumption influence smoking? - Figure 22 --------------
 
-load('data/coffee_smoking.RData')
+load('data/coffee_consumption_smoking_direction.RData')
+load('data/smoking_coffee_consumption_direction.RData')
 
 # evidence when spike = 1e-4, obtained with PolyChord 2000 live points
-log_evidence_expected_direction <- -0.422878161448718E+005
-log_evidence_expected_direction_standard_error <- 0.140144123185408E+000
-log_evidence_reverse_direction <- -0.422876287259804E+005
-log_evidence_reverse_direction_standard_error <- 0.133930400352899E+000
+log_evidence_coffee_consumption_smoking_direction <- -0.422878161448718E+005
+log_evidence_coffee_consumption_smoking_direction_standard_error <- 0.140144123185408E+000
+log_evidence_smoking_coffee_consumption_direction <- -0.422876287259804E+005
+log_evidence_smoking_coffee_consumption_direction_standard_error <- 0.133930400352899E+000
 
 # Estimated probability of expected and reverse direction (in that order)
-probability_direction <- c(1, exp(log_evidence_reverse_direction - log_evidence_expected_direction)) / 
-  (1 + exp(log_evidence_reverse_direction - log_evidence_expected_direction))
+probability_direction <- 
+  c(1, exp(log_evidence_smoking_coffee_consumption_direction - log_evidence_coffee_consumption_smoking_direction)) / 
+  (1 + exp(log_evidence_smoking_coffee_consumption_direction - log_evidence_coffee_consumption_smoking_direction))
 
-coffee_smoking_expected_direction_plot <- 
-  ggplot(coffee_smoking_posterior_expected_direction, aes(x = beta)) +
+coffee_consumption_smoking_direction_plot <- 
+  ggplot(coffee_consumption_smoking_direction_posterior, aes(x = beta)) +
   geom_density(aes_q(y = bquote(..density.. * .(probability_direction[1]))), fill = 'gray') +
   theme_tufte(base_size = 30) +
   geom_vline(xintercept = 0, lty = 'dashed') +
@@ -245,11 +247,11 @@ coffee_smoking_expected_direction_plot <-
   ylab("Posterior density")
 
 ggsave(paste0(figures_dir, "Figure_22a.pdf"), 
-       coffee_smoking_expected_direction_plot, 
+       coffee_consumption_smoking_expected_direction_plot, 
        width = 10, height = 7)
 
-coffee_smoking_reverse_direction_plot <- 
-  ggplot(coffee_smoking_posterior_reverse_direction, aes(x = beta)) +
+smoking_coffee_consumption_direction_plot <- 
+  ggplot(smoking_coffee_consumption_direction_posterior, aes(x = beta)) +
   geom_density(aes_q(y = bquote(..density.. * .(probability_direction[2]))), fill = 'gray') +
   theme_tufte(base_size = 30) +
   geom_vline(xintercept = 0, lty = 'dashed') +
@@ -259,6 +261,6 @@ coffee_smoking_reverse_direction_plot <-
   ylab("Posterior density")
 
 ggsave(paste0(figures_dir, "Figure_22b.pdf"), 
-       coffee_smoking_reverse_direction_plot, 
+       smoking_coffee_consumption_direction_plot, 
        width = 10, height = 7)
 
