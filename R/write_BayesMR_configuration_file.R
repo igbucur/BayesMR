@@ -1,8 +1,8 @@
 #' Function for automatically writing BayesMR configuration files for a given problem.
 #'
-#' @param config_file_name String indicating the name of the configuration file.
+#' @param config_filename String indicating the name of the configuration file.
 #' @param SS_filename String indicating the file where the sufficient statistics are saved.
-#' @param sigmaG_filename String indicating the file where the instrument frequency statistics are saved.
+#' @param sigma_G_filename String indicating the file where the instrument frequency statistics are saved.
 #' @param num_instruments Integer number of instruments for the given problem.
 #' @param num_observations Integer number of observations in the provided sample.
 #' @param slab_precision Numeric precision of prior slab component.
@@ -16,10 +16,10 @@
 #' @export
 #'
 #' @examples
-write_configuration_file <- function(
-  config_file_name,
+write_BayesMR_configuration_file <- function(
+  config_filename,
   SS_filename,
-  sigmaG_filename,
+  sigma_G_filename,
   num_instruments,
   num_observations,
   slab_precision = 1,
@@ -40,7 +40,7 @@ write_configuration_file <- function(
     cluster_posterior = FALSE,
     boost_posterior = 5.0,
     output_base_dir = "chains",
-    output_file_root = tools::file_path_sans_ext(basename(config_file_name)),
+    output_file_root = tools::file_path_sans_ext(basename(config_filename)),
     write_resume_file = FALSE,
     resume_previous_run = FALSE,
     write_live_points_file = FALSE,
@@ -55,13 +55,13 @@ write_configuration_file <- function(
   }
   
   tryCatch({
-    fileConn <- file(config_file_name)
+    fileConn <- file(config_filename)
     
     # First section: algorithm settings
     algorithm_settings <- paste(
       "[algorithm settings]",
-      paste("nlive =", default_control_parameters$num_live_points),
-      paste("num_repeats =", default_control_parameters$num_repeats),
+      paste("nlive =", as.integer(default_control_parameters$num_live_points)),
+      paste("num_repeats =", as.integer(default_control_parameters$num_repeats)),
       paste("do_clustering =", default_control_parameters$do_clustering),
       paste("grade_frac =", default_control_parameters$grade_frac),
       paste("precision_criterion =", default_control_parameters$precision_criterion),
@@ -108,11 +108,11 @@ write_configuration_file <- function(
     model_settings <- paste(
       "[model settings]",
       paste("SS_filename =", SS_filename),
-      paste("sigmaG_filename =", sigmaG_filename),
+      paste("sigma_G_filename =", sigma_G_filename),
       paste("slab_precision =", slab_precision),
       paste("spike_precision =", spike_precision),
-      paste("instruments =", num_instruments),
-      paste("observations =", num_observations),
+      paste("instruments =", as.integer(num_instruments)),
+      paste("observations =", as.integer(num_observations)),
       paste("model =", model_type),
       sep = "\n"
     )
