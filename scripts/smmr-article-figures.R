@@ -6,8 +6,6 @@ library(bayesplot)
 library(knitr)
 library(kableExtra)
 
-source("R/PolyChord_interface.R")
-
 figures_dir <- "figures/"
 if (!dir.exists(figures_dir)) dir.create(figures_dir)
 
@@ -247,7 +245,7 @@ coffee_consumption_smoking_direction_plot <-
   ylab("Posterior density")
 
 ggsave(paste0(figures_dir, "Figure_22a.pdf"), 
-       coffee_consumption_smoking_expected_direction_plot, 
+       coffee_consumption_smoking_direction_plot, 
        width = 10, height = 7)
 
 smoking_coffee_consumption_direction_plot <- 
