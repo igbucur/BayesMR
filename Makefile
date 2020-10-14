@@ -1,8 +1,5 @@
 
-default: build_PolyChord polychord_MR
-
-build_PolyChord: 
-	cd inst/PolyChordLite && $(MAKE) pypolychord && python setup.py -q install --user
+default: polychord_MR
 
 polychord_MR:
 	mkdir -p bin
@@ -11,7 +8,7 @@ polychord_MR:
 	cd inst/PolyChordLite && $(MAKE) polychord_MR MPI=
 	cp inst/PolyChordLite/bin/polychord_MR bin/polychord_MR
 
-# This only cleans the MR application, but it does it properly, unlike PolyChord
+# This only cleans the MR application
 clean:
 	cd inst/PolyChordLite/likelihoods/MR && rm -rf *.o
 	cd inst/PolyChordLite/lib && rm libMR_likelihood.a
