@@ -41,6 +41,8 @@ model_averaging_plot <- function(example_data, expected_direction = TRUE, xlim =
     fig <- fig + annotate("text", x = xlim[2] / 12, y = 0.9 * max(ggplot_build(fig)$data[[1]]$y), 
                label = sprintf("%.2f%%", round(evidence_comparison$probability_expected * 100, 2)), size = 8)
   }
+  
+  fig
 }
 
 ggsave(paste0(figures_dir, "Figure_14.pdf"), 
@@ -65,10 +67,10 @@ ggsave(paste0(figures_dir, "Figure_15.pdf"), estimation_robustness_plot,
 
 # 5.2 - Sensitivity to Prior Hyperparameters - Figure 16 ------------------
 
-load('data/sensitivity_hyperparameters.RData')
+load('data/sensitivity_to_hyperparameters.RData')
 
-sensitivity_hyperparameters_plot <- 
-  ggplot(sensitivity_hyperparameters, aes(x = spike, y = beta)) +
+sensitivity_to_hyperparameters_plot <- 
+  ggplot(sensitivity_to_hyperparameters, aes(x = spike, y = beta)) +
   geom_violin(fill = 'gray', colour = 'darkblue') +
   ylab(expression(beta))+
   xlab(expression(lambda)) +
@@ -77,7 +79,7 @@ sensitivity_hyperparameters_plot <-
   theme(aspect.ratio = 2) +
   theme(axis.ticks.y = element_blank()) +
   scale_x_discrete(labels = sapply(
-    paste0("10^", -as.integer(levels(sensitivity_hyperparameters$spike))), 
+    paste0("10^", -as.integer(levels(sensitivity_to_hyperparameters$spike))), 
     function(t) parse(text = t), USE.NAMES = FALSE)) +
   scale_linetype_manual(name = "", values = c("WPP bounds" = "dashed")) +
   theme(legend.position = "bottom") +
@@ -85,7 +87,7 @@ sensitivity_hyperparameters_plot <-
   theme(legend.margin = margin(0, 0, 0, 0)) +
   geom_hline(yintercept = 1, lty = 2)
 
-ggsave(paste0(figures_dir, "Figure_16.pdf"), sensitivity_hyperparameters_plot, 
+ggsave(paste0(figures_dir, "Figure_16.pdf"), sensitivity_to_hyperparameters_plot, 
        height = 10, width = 6)
 
 
