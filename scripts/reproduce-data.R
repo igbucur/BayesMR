@@ -32,15 +32,17 @@ SSS <- t(Z) %*% Z / samples
 RSS <- SSS[c(1, 2, 4, 3), c(1, 2, 4, 3)]
 sigma_G <- sd(G) # sigma_G <- sqrt(MAF * (1 - MAF) * n)
 
-file_SS_expected <- 'data/near_LCD_example_SS_expected.txt'
-file_SS_reverse <- 'data/near_LCD_example_SS_reverse.txt'
-file_sigma_G <- 'data/near_LCD_example_sigma_G.txt'
+fileroot <- 'near_LCD_example'
+
+file_SS_expected <- sprintf('data/%s_SS_expected.txt', fileroot)
+file_SS_reverse <- sprintf('data/%s_SS_reverse.txt', fileroot)
+file_sigma_G <- sprintf('data/%s_sigma_G.txt', fileroot)
 
 write.table(SSS, file = file_SS_expected, row.names = FALSE, col.names = FALSE)
 write.table(RSS, file = file_SS_reverse, row.names = FALSE, col.names = FALSE)
 write.table(sigma_G, file = file_sigma_G, row.names = FALSE, col.names = FALSE)
 
-ini_expected <- 'ini/near_LCD_example_expected.ini'
+ini_expected <- sprintf('ini/%s_expected.ini', fileroot)
 
 write_BayesMR_configuration_file(
   config_filename = ini_expected,
@@ -51,7 +53,7 @@ write_BayesMR_configuration_file(
   PolyChord_control = list(num_live_points = 1000)
 )
 
-ini_reverse <- 'ini/near_LCD_example_reverse.ini'
+ini_reverse <- sprintf('ini/%s_reverse.ini', fileroot)
 write_BayesMR_configuration_file(
   config_filename = ini_reverse,
   SS_filename = file_SS_reverse,
@@ -64,10 +66,28 @@ write_BayesMR_configuration_file(
 run_system_command(paste("./BayesMR", ini_expected))
 run_system_command(paste("./BayesMR", ini_reverse))
 
-print(derive_polychord_Bayes_factor(
-  'chains/near_LCD_example_expected.stats', 
-  'chains/near_LCD_example_reverse.stats')
+near_LCD_example <- list(
+  samples_expected = read_PolyChord_samples(
+    sprintf('chains/%s_expected_temp_equal_weights.txt', fileroot), quantile_transform = FALSE
+  ),
+  samples_reverse = read_PolyChord_samples(
+    sprintf('chains/%s_reverse_temp_equal_weights.txt', fileroot), quantile_transform = FALSE
+  ),
+  evidence_comparison = derive_polychord_Bayes_factor(
+    sprintf('chains/%s_expected.stats', fileroot), 
+    sprintf('chains/%s_reverse.stats', fileroot)
+  )
 )
+
+names(near_LCD_example$evidence_comparison) <- c(
+  "Bayes_factor_expected_versus_reverse",
+  "Bayes_factor_lower_standard_deviation",
+  "Bayes_factor_upper_standard_deviation",
+  "probability_expected",
+  "probability_reverse"
+)
+
+save(near_LCD_example, file = 'data/near_LCD_example_reproduced.RData')
 
 # 5.1 - Estimation Robustness - Figure 15 ---------------------------------
 
@@ -85,6 +105,8 @@ kappa_X <- rnorm(1) # confounding coefficient on exposure
 kappa_Y <- rnorm(1) # confounding coefficient on outcome
 sigma_X <- abs(rnorm(1)) # intrinsic sd of exposure
 sigma_Y <- abs(rnorm(1)) # intrinsic sd of outcome
+
+estimation_robustness <- list()
 
 for (K in seq(J, 0, -(J/5))) {
   alpha_K <- alpha
@@ -112,7 +134,15 @@ for (K in seq(J, 0, -(J/5))) {
   )
   
   run_system_command(paste("./BayesMR", ini_filename))
+  
+  PolyChord_samples <- read_PolyChord_samples(
+    sprintf('chains/%s_temp_equal_weights.txt', fileroot), quantile_transform = FALSE
+  )
+  estimation_robustness[[sprintf("%d%%", K / J * 100)]] <- 
+    extract_beta_PolyChord_samples(PolyChord_samples)
 }
+
+save(estimation_robustness, file = 'data/estimation_robustness_reproduced.RData')
 
 # 5.2 - Sensitivity to Prior Hyperparameters - Figure 16 ------------------
 
