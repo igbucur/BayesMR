@@ -12,7 +12,6 @@
 #' 
 #' @details PolyChord control parameters
 #'
-#' @return
 #' @export
 #'
 #' @examples

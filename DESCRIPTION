@@ -17,9 +17,11 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: R (>= 3.5.0)
-Imports:
-  rstan
 Suggests:
   ggplot2,
-  bayesplot
+  bayesplot,
+  tidyverse,
+  ggthemes,
+  knitr,
+  kableExtra
 SystemRequirements: GNU make
