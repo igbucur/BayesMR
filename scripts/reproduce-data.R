@@ -579,7 +579,7 @@ save(birth_weight_fasting_glucose_default, birth_weight_fasting_glucose_IV,
 
 # Extract BayesMR input from summary statistics
 
-genetic_associations <- read.csv('inst/extdata/SNP_bmi_parkinson.csv')
+genetic_associations <- read.csv('inst/extdata/Parkinson_BMI_genetic_associations.csv')
 J <- nrow(genetic_associations)
 genetic_associations <- genetic_associations[order(genetic_associations$gamma_hat, decreasing = T)[1:J],]
 

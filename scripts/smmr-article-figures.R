@@ -181,7 +181,7 @@ ggsave(paste0(figures_dir, "Figure_18.pdf"),
 # 6.3 Effect of BMI on the risk of PD - Figures 19-21 ---------------------
 
 load('data/Parkinson_BMI.RData')
-genetic_associations <- read.csv('inst/extdata/SNP_bmi_parkinson.csv')
+genetic_associations <- read.csv('inst/extdata/Parkinson_BMI_genetic_associations.csv')
 
 Parkinson_BMI_beta_plot <- mcmc_areas(Parkinson_BMI_posterior, pars = "beta") +
   ggthemes::theme_tufte() + 
