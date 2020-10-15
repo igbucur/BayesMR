@@ -1,33 +1,46 @@
-# The path to the Armadillo library needs to be specified for Windows
+# h/t to @jimhester and @yihui for this parse block:
+# https://github.com/yihui/knitr/blob/dc5ead7bcfc0ebd2789fe99c527c7d91afb3de4a/Makefile#L1-L4
+# Note the portability change as suggested in the manual:
+# https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages
+PKGNAME = `sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
+PKGVERS = `sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
+
 ifeq ($(OS), Windows_NT)
-ARMA_LIB = /c/msys64/mingw64/lib
+  R_EXEC=/c/Program\ Files/R/R-4.0.2/bin/R.exe
+  MINGW_DIR=/c/msys64/mingw64
+  CC = $(MINGW_DIR)/bin/gcc.exe
+  CXX = $(MINGW_DIR)/bin/g++.exe
+  FC = $(MINGW_DIR)/bin/gfortran.exe
+  AR = $(MINGW_DIR)/bin/ar.exe rv
+  LD = $(MINGW_DIR)/bin/ld.exe
+else
+  R_EXEC = R
+  CC = gcc
+  CXX = g++
+  FC = gfortran
+  AR = ar rv
+  LD = ld
 endif
-FC = gfortran
-CC = gcc
-LDLIBS += -L$(ARMA_LIB) 
-export FC CC LDLIBS
 
+POLYCHORD_DIR = inst/PolyChordLite
 
-default: build_PolyChord polychord_MR
+export CC CXX FC AR LD
+
+default: build_PolyChord build_BayesMR
 
 build_PolyChord: 
-  cd inst/PolyChordLite && $(MAKE)
+	cd $(POLYCHORD_DIR) && $(MAKE) MPI=
 
-polychord_MR:
-  mkdir -p bin
-mkdir -p chains/clusters
-mkdir -p ini
-cd inst/PolyChordLite && $(MAKE) polychord_MR MPI=
-  cp inst/PolyChordLite/bin/polychord_MR bin/polychord_MR
+build_BayesMR:
+	make -C posterior
 
-# This only cleans the MR application, but it does it properly, unlike PolyChord
-clean:
-  cd inst/PolyChordLite/likelihoods/MR && rm -rf *.o
-cd inst/PolyChordLite/lib && rm libMR_likelihood.a
-cd inst/PolyChordLite/src/drivers && rm polychord_MR.o
+clean: clean_BayesMR clean_PolyChord
 
-veryclean:
-  cd inst/PolyChordLite && $(MAKE) veryclean
+# This only cleans the BayesMR application
+clean_BayesMR:
+	cd posterior && rm -rf *.o && rm libBayesMR_likelihood.a
 
-
+# This cleans PolyChord
+clean_PolyChord:
+	cd $(POLYCHORD_DIR) && $(MAKE) veryclean
 
