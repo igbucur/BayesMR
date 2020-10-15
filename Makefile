@@ -6,20 +6,20 @@ PKGNAME = `sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 PKGVERS = `sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 
 ifeq ($(OS), Windows_NT)
-  R_EXEC=/c/Program\ Files/R/R-4.0.2/bin/R.exe
   MINGW_DIR=/c/msys64/mingw64
   CC = $(MINGW_DIR)/bin/gcc.exe
   CXX = $(MINGW_DIR)/bin/g++.exe
   FC = $(MINGW_DIR)/bin/gfortran.exe
   AR = $(MINGW_DIR)/bin/ar.exe rv
   LD = $(MINGW_DIR)/bin/ld.exe
+   EXEC = BayesMR.exe
 else
-  R_EXEC = R
   CC = gcc
   CXX = g++
   FC = gfortran
   AR = ar rv
   LD = ld
+  EXEC = BayesMR
 endif
 
 POLYCHORD_DIR = inst/PolyChordLite
@@ -38,6 +38,7 @@ clean: clean_BayesMR clean_PolyChord
 
 # This only cleans the BayesMR application
 clean_BayesMR:
+	rm $(EXEC)
 	cd posterior && rm -rf *.o && rm libBayesMR_likelihood.a
 
 # This cleans PolyChord
