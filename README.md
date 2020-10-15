@@ -46,10 +46,10 @@ the simpleini submodule.
 The code is structured on the skeleton of an [R package](https://r-pkgs.org/index.html) 
 package as follows:
 
-- The folder `data` contains pre-saved simulated data, which we use to recreate
-the figures from the article. The simulated data can also be reproduced using 
-the `aistats-article-figures.R` script in the main folder. The simulated data
-sets are described in `R/data.R`.
+- The folder `data` contains pre-saved simulated data in .RData format, which we 
+use to recreate the figures from the article. The simulated data can also be
+reproduced using the `reproduce-data.R` file from the `scripts` folder. 
+The simulated data sets are described in `R/data.R`.
 
 - The folder `inst` contains the package submodules.
   - The subfolder `inst/PolyChordLite` contains the [PolyChordLite](https://github.com/igbucur/PolyChordLite) submodule, which is
@@ -57,21 +57,31 @@ sets are described in `R/data.R`.
   The PolyChordLite submodule implements a complex nested sampling algorithm,
   which we employ in BayesMR for estimating model evidences and producing posterior 
   samples. The original implementation is kept unchanged, with the exception of 
-  changes in the build configuration file made for easier compilation and installation,
-  as well as registering BayesMR as a driver in PolyChordLite/src/drivers.
+  changes in the build configuration file made for easier compilation and installation.
   - The subfolder `inst/simpleini` contains the [simpleini](https://github.com/igbucur/simpleini)
   submodule, which is a fork of the project developed by Brodie Thiesfield. 
   The simpleini submodule is a cross-platform library that provides a simple 
   API to read and write INI-style configuration files, which we use as command 
   line arguments for configuring each run of the BayesMR program.
+  - The subfolder `inst/extdata` contains a few data files that are not in .RData
+  format. `Parkinson_BMI_genetic_associations.csv` is a comma-separated values 
+  file which contains a list of genetic variants and their associations with
+  BMI and the risk of Parkinson's disease from [(Noyce et al., 2017)](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1002314).
+  `BayesMR_SS.txt` and `BayesMR_sigma_G.txt` are first-order and second-order statistics
+  used as input for the provided BayesMR example (see also `ini/BayesMR.ini`).
 
 - The folder `R` contains the R files necessary for reproducing the figures from
 the article.
 
-- The folder `man` contains the documentation for the implemented functions.
+- The folder `man` contains the documentation for the implemented R functions
+and for the registered .RData files.
 
 - The folder `posterior` contains the C++ implementation of BayesMR written for
 integration with PolyChord.
+
+- The folder `ini` contains an example configuration file (`BayesMR.ini`). This
+configuration file can be passed as the single necessary command line argument
+when running BayesMR.
 
 - The folder `scripts` contains the script `smmr-article-figures.R`, which
 can be run from R to produce the figures in the Statistical Methods in Medical
@@ -79,9 +89,9 @@ Research (SMMR) article and a script called `reproduce-data.R`, which can be
 used to reproduce the simulated data saved in the `data` folder.
 
 - The top folder also contains the following files:
-  - `DESCRIPTION` is the file describing the R package
-  - `NAMESPACE` is the file specifying the fucntions provided by the R package
-  - `LICENSE.md` is the file containing the GPL-3 license
+  - `DESCRIPTION` is the file describing the R package.
+  - `NAMESPACE` is the file specifying the fucntions provided by the R package.
+  - `LICENSE.md` is the file containing the GPL-3 license.
 
 
 ## Prerequisites
@@ -130,7 +140,7 @@ individually, so that the C++ compiler, e.g., [gcc](https://gcc.gnu.org/), can
 find the required headers and libraries. On Windows, the path to the collection
 of prerequisites must be specified separately. For example, if using 
 [MSYS2](https://www.msys2.org/) with 64-bit [MinGW](http://www.mingw.org/), then 
-one must add `-I/c/msys64/mingw64/include` to `CFLAGS` and `-L/c/msys64/mingw64/lib` 
+one must add `-I/c/msys64/mingw64/include` to `CPPFLAGS` and `-L/c/msys64/mingw64/lib` 
 to `LDFLAGS` in the Makefile, assuming default installation directories.
 
 Assuming everything managed to compile successfully, the executable `BayesMR` 
