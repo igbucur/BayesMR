@@ -20,6 +20,7 @@
 #' @export
 #'
 #' @examples
+#' MR_regression_coefficients_to_moments(1, 1, 1e-3, 1000, 1, 1e-3, 1000, 1, 1e-3)
 MR_regression_coefficients_to_moments <- function(J, beta_XG, sigma_XG, obs_XG, beta_YG, sigma_YG, obs_YG, beta_YX, obs_YX, EAF = rep(0.5, J), n = 2) {
 
   N <- min(obs_YX, obs_XG, obs_YG)
