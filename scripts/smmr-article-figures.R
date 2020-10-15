@@ -181,6 +181,7 @@ ggsave(paste0(figures_dir, "Figure_18.pdf"),
 # 6.3 Effect of BMI on the risk of PD - Figures 19-21 ---------------------
 
 load('data/Parkinson_BMI.RData')
+genetic_associations <- read.csv('inst/extdata/SNP_bmi_parkinson.csv')
 
 Parkinson_BMI_beta_plot <- mcmc_areas(Parkinson_BMI_posterior, pars = "beta") +
   ggthemes::theme_tufte() + 
@@ -198,12 +199,12 @@ Parkinson_BMI_beta_plot <- mcmc_areas(Parkinson_BMI_posterior, pars = "beta") +
 ggsave(paste0(figures_dir, "Figure_19.pdf"), Parkinson_BMI_beta_plot, width = 8, height = 8)
 
 Parkinson_BMI_outliers_plot <- 
-  ggplot(data.frame(BMI_genetic_associations), aes(x = gamma_hat, y = Gamma_hat)) + 
-  geom_point(color = c('red', 'red', rep('black', nrow(BMI_genetic_associations) - 2)), 
-             shape = c(2, 2, rep(1, nrow(BMI_genetic_associations) - 2)), size = 3) + 
+  ggplot(data.frame(genetic_associations), aes(x = gamma_hat, y = Gamma_hat)) + 
+  geom_point(color = c('red', 'red', rep('black', nrow(genetic_associations) - 2)), 
+             shape = c(2, 2, rep(1, nrow(genetic_associations) - 2)), size = 3) + 
   geom_smooth(method = "lm", formula = y ~ 0 + x, se = FALSE, col = 'red', linetype = 2) +
   geom_smooth(method = "lm", formula = y ~ 0 + x, se = FALSE, col = 'black',
-              data = data.frame(BMI_genetic_associations)[-c(1, 2),]) +
+              data = data.frame(genetic_associations)[-c(1, 2),]) +
   ggthemes::theme_tufte() + 
   theme(text = element_text(size = 25), 
         axis.title.x = element_text(margin = margin(t = 10)), 

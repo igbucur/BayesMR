@@ -579,15 +579,15 @@ save(birth_weight_fasting_glucose_default, birth_weight_fasting_glucose_IV,
 
 # Extract BayesMR input from summary statistics
 
-BMI_genetic_associations <- read.csv('inst/extdata/SNP_bmi_parkinson.csv')
-J <- nrow(BMI_genetic_associations)
-BMI_genetic_associations <- BMI_genetic_associations[order(BMI_genetic_associations$gamma_hat, decreasing = T)[1:J],]
+genetic_associations <- read.csv('inst/extdata/SNP_bmi_parkinson.csv')
+J <- nrow(genetic_associations)
+genetic_associations <- genetic_associations[order(genetic_associations$gamma_hat, decreasing = T)[1:J],]
 
-EAF <- BMI_genetic_associations$theta
-gamma_hat <- BMI_genetic_associations$gamma_hat
-gamma_se <- BMI_genetic_associations$gamma_se
-Gamma_hat <- BMI_genetic_associations$Gamma_hat
-Gamma_se <- BMI_genetic_associations$Gamma_se
+EAF <- genetic_associations$theta
+gamma_hat <- genetic_associations$gamma_hat
+gamma_se <- genetic_associations$gamma_se
+Gamma_hat <- genetic_associations$Gamma_hat
+Gamma_se <- genetic_associations$Gamma_se
 beta_hat <- 0 # meta-analysis (Wang et al. 2015)
 
 n <- 2
@@ -635,7 +635,7 @@ Parkinson_BMI_posterior <-
   read_PolyChord_samples(sprintf('chains/%s_temp_equal_weights.txt', fileroot))
 
 # Save data files
-save(Parkinson_BMI_posterior, BMI_genetic_associations,
+save(Parkinson_BMI_posterior, genetic_associations,
      file = 'data/Parkinson_BMI_reproduced.RData')
 
 

@@ -33,7 +33,8 @@ run_system_command <- function(command, Windows_shell = 'C:/msys64/msys2_shell.c
 #' @param seed Integer random seed for reproducibility.
 #' @param n Integer number of alleles (trials) for the binomial genetic variables.
 #'
-#' @return
+#' @return List containing generate data vector as well as the scatter matrix
+#' of first-order and second-order statistics.
 #' @export
 #'
 #' @examples
@@ -45,10 +46,10 @@ generate_data_BayesMR_model <- function(
   
   set.seed(seed) # set random seed
   
-  G <- sapply(theta, function(t) rbinom(N, n, t)) # genetic variant
-  U <- rnorm(N) # confounder
-  X <- G %*% gamma + kappa_X * U + rnorm(N, sd = sigma_X) # exposure
-  Y <- G %*% alpha + kappa_Y * U + beta * X + rnorm(N, sd = sigma_Y) # outcome
+  G <- sapply(theta, function(t) stats::rbinom(N, n, t)) # genetic variant
+  U <- stats::rnorm(N) # confounder
+  X <- G %*% gamma + kappa_X * U + stats::rnorm(N, sd = sigma_X) # exposure
+  Y <- G %*% alpha + kappa_Y * U + beta * X + stats::rnorm(N, sd = sigma_Y) # outcome
   Z <- cbind(1, G, X, Y) # vector containing all variables
   
   list(data = Z, SS = t(Z) %*% Z / N)
