@@ -18,7 +18,8 @@ measure of the uncertainty in the estimation. More importantly, with the BayesMR
 algorithm we can estimate the model evidence for both directions to determine 
 how much more likely the expected direction is relative to the reverse direction.
 
-## BayesMR
+
+## Content
 
 The data set contains source code implementing the BayesMR algorithm, which is 
 described in the article titled "[Inferring the Direction of a Causal Link and 
