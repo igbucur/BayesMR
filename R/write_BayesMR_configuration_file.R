@@ -16,6 +16,12 @@
 #' @export
 #'
 #' @examples
+#' write_BayesMR_configuration_file(
+#'   config_filename = "ini/BayesMR.ini",
+#'   SS_filename = "inst/extdata/BayesMR_SS.txt",
+#'   sigma_G_filename = "inst/extdata/BayesMR_sigma_G.txt",
+#'   num_instruments = 1, num_observations = 1000
+#' )
 write_BayesMR_configuration_file <- function(
   config_filename,
   SS_filename,
