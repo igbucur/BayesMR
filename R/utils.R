@@ -21,33 +21,35 @@ run_system_command <- function(command, Windows_shell = 'C:/msys64/msys2_shell.c
 
 #' Function to generate data from a BayesMR generating model.
 #'
-#' @param N 
-#' @param theta 
-#' @param gamma 
-#' @param alpha 
-#' @param beta 
-#' @param kappa_X 
-#' @param kappa_Y 
-#' @param sigma_X 
-#' @param sigma_Y 
-#' @param seed
-#' @param n  
+#' @param N Integer number of observations.
+#' @param theta Numeric expected allele frequencies for the genetic variables.
+#' @param gamma Numeric direct causal effect from genetic variants to exposure.
+#' @param alpha Numeric direct causal effect from genetic variants to outcome.
+#' @param beta Numeric causal effect from exposure to outcome.
+#' @param kappa_X Numeric confounding effect from confounder to exposure.
+#' @param kappa_Y Numeric confounding effect from confounder to outcome.
+#' @param sigma_X Numeric intrinsic standard deviation of exposure.
+#' @param sigma_Y Numeric intrinsic standard deviation of outcome.
+#' @param seed Integer random seed for reproducibility.
+#' @param n Integer number of alleles (trials) for the binomial genetic variables.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' generate_data_BayesMR_model(N = 1000, theta = c(0.5, 0.3), gamma = c(1, 1), 
+#' alpha = c(0, 0.05), beta = 1, kappa_X = 1, kappa_Y = 1, sigma_X = 1, sigma_Y = 1)
 generate_data_BayesMR_model <- function(
   N, theta, gamma, alpha, beta, kappa_X, kappa_Y, sigma_X, sigma_Y, seed = NULL, n = 2
   ) {
   
-  set.seed(seed)
+  set.seed(seed) # set random seed
   
   G <- sapply(theta, function(t) rbinom(N, n, t)) # genetic variant
   U <- rnorm(N) # confounder
-  X <- G %*% gamma + kappa_X * U + rnorm(N, sd = sigma_X)
-  Y <- G %*% alpha + kappa_Y * U + beta * X + rnorm(N, sd = sigma_Y)
-  Z <- cbind(1, G, X, Y)
+  X <- G %*% gamma + kappa_X * U + rnorm(N, sd = sigma_X) # exposure
+  Y <- G %*% alpha + kappa_Y * U + beta * X + rnorm(N, sd = sigma_Y) # outcome
+  Z <- cbind(1, G, X, Y) # vector containing all variables
   
   list(data = Z, SS = t(Z) %*% Z / N)
 }
@@ -56,13 +58,25 @@ generate_data_BayesMR_model <- function(
 
 
 
-# Get quantile for the spike and slab prior
-quantile_spike_and_slab <- function(p, w = 0.5, slab = 1, spike = 1e2) {
+#' Function for computing spike-and-slab quantiles.
+#'
+#' @param p Numeric probability value between 0 and 1.
+#' @param w Numeric weight of spike-and-slab mixture between 0 (spike) and 1 (slab).
+#' @param slab_precision Numeric precision of slab component.
+#' @param spike_precision Numeric precision of spike component.
+#'
+#' @return Spike-and-slab quantile for given probability value.
+#' @export
+#'
+#' @examples
+#' quantile_spike_and_slab(0.9)
+#' quantile_spike_and_slab(0.5, w = 0.3)
+quantile_spike_and_slab <- function(p, w = 0.5, slab_precision = 1, spike_precision = 1e2) {
   
-  qspike <- function(p) stats::qnorm(p, 0, sd = sqrt(1 / spike))
-  qslab <- function(p) stats::qnorm(p, 0, sd = sqrt(1 / slab))
-  pspike <- function(q) stats::pnorm(q, 0, sd = sqrt(1 / spike))
-  pslab <- function(q) stats::pnorm(q, 0, sd = sqrt(1 / slab))
+  qspike <- function(p) stats::qnorm(p, 0, sd = sqrt(1 / spike_precision))
+  qslab <- function(p) stats::qnorm(p, 0, sd = sqrt(1 / slab_precision))
+  pspike <- function(q) stats::pnorm(q, 0, sd = sqrt(1 / spike_precision))
+  pslab <- function(q) stats::pnorm(q, 0, sd = sqrt(1 / slab_precision))
   
   
   left <- ifelse(p < 0.5, qslab(p), qspike(p))
@@ -89,6 +103,22 @@ quantile_spike_and_slab <- function(p, w = 0.5, slab = 1, spike = 1e2) {
   middle
 }
 
+#' Vectorized version of function for computing spike-and-slab prior quantiles.
+#'
+#' @param p_vec Numeric vector of probability values between 0 and 1. 
+#' @param x_vec Numeric vector of weights for spike-and-slab mixtures, all
+#' between 0 (spike) and 1 (slab). Alternatively, a single value to be used for 
+#' all p in p_vec.
+#' @param slab_vec Numeric vector of slab component precisions. Alternatively,
+#' a single value to be used for all p in p_vec.
+#' @param spike_vec Numeric vector of spike component precisions. Alternatively,
+#' a single value to be used for all p in p_vec.
+#'
+#' @return Vector of spike-and-slab quantile for given probability values.
+#' @export
+#'
+#' @examples
+#' quantile_spike_and_slab_vectorized(c(0.9, 0.5), c(0.5, 0.3))
 quantile_spike_and_slab_vectorized <- function(p_vec, x_vec, slab_vec = 1, spike_vec = 1e2) {
   
   if (length(x_vec) == 1) x_vec <- rep(x_vec, length(p_vec))
