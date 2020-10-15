@@ -1,0 +1,25 @@
+Package: BayesMR
+Title: Bayesian Mendelian Randomization for Inferring the Direction of a Causal Link and Estimating Its Effect
+Version: 1.0.0
+Authors@R: 
+    person(given = "Ioan Gabriel",
+           family = "Bucur",
+           role = c("aut", "cre"),
+           email = "ioan.gabriel.bucur@gmail.com",
+           comment = c(ORCID = "0000-0002-7852-052X"))
+Description: Implementation of the approach described in the article titled
+    "Inferring the Direction of a Causal Link and Estimating Its Effect via
+    a Bayesian Mendelian Randomization Approach", published in Statistical 
+    Methods for Medical Research, Volume 29(4).
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Depends: R (>= 3.5.0)
+Imports:
+  rstan
+Suggests:
+  ggplot2,
+  bayesplot
+SystemRequirements: GNU make
