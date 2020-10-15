@@ -42,7 +42,8 @@ generate_data_BayesMR_model(
 \item{n}{Integer number of alleles (trials) for the binomial genetic variables.}
 }
 \value{
-
+List containing generate data vector as well as the scatter matrix
+of first-order and second-order statistics.
 }
 \description{
 Function to generate data from a BayesMR generating model.

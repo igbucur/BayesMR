@@ -35,9 +35,6 @@ write_BayesMR_configuration_file(
 
 \item{PolyChord_control}{List of PolyChord control parameters (see details section).}
 }
-\value{
-
-}
 \description{
 Function for automatically writing BayesMR configuration files for a given problem.
 }

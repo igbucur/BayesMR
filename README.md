@@ -88,6 +88,7 @@ used to reproduce the simulated data saved in the `data` folder.
 
 Just for installing the software and running basic examples, you will need:
 
+- [GNU Bash](https://www.gnu.org/software/bash/)
 - [GNU Make Build Tool](https://www.gnu.org/software/make/)
 - [GNU C++ Compiler](https://gcc.gnu.org/) or similar
 - [GNU Fortran Compiler](https://gcc.gnu.org/fortran/) or similar
@@ -134,9 +135,9 @@ to `LDFLAGS` in the Makefile, assuming default installation directories.
 
 Assuming everything managed to compile successfully, the executable `BayesMR` 
 should appear in the root folder. To verify that BayesMR has been built successfully, 
-one can use the provided script by running `./BayesMR ini/BayesMR.ini` in a 
-Linux or Windows terminal. To verify that the R package is installed successfully, 
-run `Rscript scripts/smmr-article-figures.R`.
+one can use the provided script by running `bash scripts/run_BayesMR_example.sh` in a 
+Linux or Windows terminal (requires [GNU Bash](https://www.gnu.org/software/bash/)). 
+To verify that the R package is installed successfully, run `Rscript scripts/smmr-article-figures.R`.
 
 
 ## Licensing
