@@ -19,7 +19,7 @@ load('data/near_LCD_example.RData')
 model_averaging_plot <- function(example_data, expected_direction = TRUE, xlim = c(-0.25, 2)) {
   
   if (expected_direction) {
-    beta_expected <- quick_derive_beta(example_data$samples_expected, spike = 100)
+    beta_expected <- extract_beta_PolyChord_samples(example_data$samples_expected, spike = 100)
     fig <- ggplot(as.data.frame(beta_expected), aes(x = beta_expected)) +
       geom_density(aes_q(y = bquote(..density.. * .(example_data$evidence_comparison$probability_expected))), fill = 'gray') +
       theme_tufte(base_size = 30) + xlim(xlim) +
@@ -30,7 +30,7 @@ model_averaging_plot <- function(example_data, expected_direction = TRUE, xlim =
                label = sprintf("%.2f%%", round(example_data$evidence_comparison$probability_reverse * 100, 2)), size = 8)
     
   } else {
-    beta_reverse <- quick_derive_beta(example_data$samples_reverse, spike = 100)
+    beta_reverse <- extract_beta_PolyChord_samples(example_data$samples_reverse, spike = 100)
     fig <- ggplot(as.data.frame(beta_reverse), aes(x = beta_reverse)) +
       geom_density(aes_q(y = bquote(..density.. * .(example_data$evidence_comparison$probability_reverse))), fill = 'gray') +
       theme_tufte(base_size = 30) + xlim(xlim) +
